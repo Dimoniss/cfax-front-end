@@ -1,6 +1,7 @@
 <script setup>
 import AuthFormLogin from './AuthFormLogin.vue'
 import AuthFormProfile from './AuthFormProfile.vue'
+import { currentPage } from './state'
 </script>
 
 <template>
@@ -13,7 +14,7 @@ import AuthFormProfile from './AuthFormProfile.vue'
       </div>
     </div>
 
-    <AuthFormLogin v-if="true" />
+    <AuthFormLogin v-if="true" @update-current-page="currentPage = $event" />
     <AuthFormProfile v-else />
   </header>
 </template>

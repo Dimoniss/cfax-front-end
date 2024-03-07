@@ -1,3 +1,15 @@
+<script>
+export default {
+  name: 'AuthFormLogin',
+  methods: {
+    handleClick(page) {
+      this.selectedPage = page
+      this.$emit('update-current-page', page)
+    }
+  }
+}
+</script>
+
 <template>
   <form
     class="flex-col flex gap-2 border border-slate-500 rounded-xl shadow px-2 py-1 bg-gray-400 h-40 w-56"
@@ -20,7 +32,12 @@
     </div>
     <div class="flex justify-between">
       <div class="flex flex-col">
-        <a class="text-sm text-gray-500 hover:text-black cursor-pointer" href="#">Registration</a>
+        <a
+          class="text-sm text-gray-500 hover:text-black cursor-pointer"
+          @click="handleClick('RegistrationForm')"
+          href="#RegistrationForm"
+          >Registration</a
+        >
         <a class="text-sm text-gray-500 hover:text-black cursor-pointer" href="#"
           >Forgot password?</a
         >
