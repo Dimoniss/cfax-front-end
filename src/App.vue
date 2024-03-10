@@ -5,9 +5,9 @@ import TheNav from './components/TheNav.vue'
 import Information from './components/TheInformation.vue'
 import Support from './components/TheSupport.vue'
 import MainFooter from './components/TheFooter.vue'
-import RegistrationForm from './components/RegistrationForm.vue'
+import RegistrationForm from './components/auth/RegistrationForm.vue'
 
-import { currentPage } from './components/state'
+import { currentPage } from './utils/state'
 import { store } from '@/utils/store'
 </script>
 <script>
@@ -26,7 +26,7 @@ export default {
     <header><TheHeader /></header>
 
     <TheNav @update-current-page="currentPage = $event" />
-    <main class="flex-1">
+    <main class="flex-1 m-auto p-12">
       <!-- <b>store: {{ store }}</b> -->
 
       <CheckVIN v-if="currentPage === 'Check VIN'" />

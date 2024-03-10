@@ -1,7 +1,7 @@
 <script setup>
-import AuthFormLogin from './AuthFormLogin.vue'
-import AuthFormProfile from './AuthFormProfile.vue'
-import { currentPage } from './state'
+import AuthFormLogin from './auth/AuthFormLogin.vue'
+import AuthFormProfile from './auth/AuthFormProfile.vue'
+import { auth, currentPage } from '../utils/state'
 </script>
 
 <template>
@@ -14,7 +14,11 @@ import { currentPage } from './state'
       </div>
     </div>
 
-    <AuthFormLogin v-if="true" @update-current-page="currentPage = $event" />
-    <AuthFormProfile v-else />
+    <AuthFormLogin
+      v-if="auth == false"
+      @update-current-page="currentPage = $event"
+      @update-login-form="auth = $event"
+    />
+    <AuthFormProfile v-if="auth == true" />
   </header>
 </template>
