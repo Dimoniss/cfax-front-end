@@ -24,7 +24,6 @@ export default {
 <template>
   <w-app class="flex flex-col min-h-screen w-4/5 m-auto h-screen rounded-xl shadow-xl">
     <header><TheHeader /></header>
-    <w-button>My Button</w-button>
     <TheNav @update-current-page="currentPage = $event" />
     <main class="flex-1 m-auto p-12">
       <!-- <b>store: {{ store }}</b> -->

@@ -19,16 +19,16 @@ export default {
 </script>
 
 <template>
-  <header>
-    <w-flex grow>
-      <div class="w-48 xs6 md9">
-        <img class="xs6 aligh-left" src="/logo/logo-no-background.png" alt="logo" />
+  <header class="bg-gray-300 h-48">
+    <w-flex justify-space-between>
+      <div class="md4 p-4">
+        <img class="xs6 aligh-left rounded-lg" src="/logo/logo-no-background.png" alt="logo" />
       </div>
-      <div>
+      <div class="xs6 md4 p-4">
         <h1 class="text-xl font-semibold text-gray-800">CARFAX Reports</h1>
         <p class="text-slate-500">Check your car with CFax</p>
       </div>
-      <div class="xs6 md3">
+      <div class="xs6 md4">
         <AuthForm @update-current-page="currentPage = $event" />
       </div>
     </w-flex>

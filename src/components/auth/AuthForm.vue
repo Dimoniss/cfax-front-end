@@ -1,7 +1,7 @@
 <template>
-  <div v-if="store.currentUser.isLoggedIn === false">
-    <form id="LoginForm" class="w-flex">
-      <div class="xs8">
+  <div id="loginForm">
+    <div v-if="store.currentUser.isLoggedIn === false">
+      <div class="w-flex p-4">
         <div
           class="xs8"
           @keyup.enter="
@@ -13,15 +13,15 @@
           "
         >
           <w-input
-            class="mb2"
+            class="mb1"
             label="Username"
             type="text"
             inner-icon-left="mdi mdi-account"
-            v-model="store.currentUser.authentication.username"
+            v-model="store.currentUser.authentication.useremail"
           ></w-input>
           <!-- @keyup.enter="logIn(store.currentUser.authentication.username, store.currentUser.authentication.password, this.$router)" -->
           <w-input
-            class="mb2"
+            class="mb1"
             label="Password"
             :type="isPassword ? 'password' : 'text'"
             :inner-icon-left="isPassword ? 'mdi mdi-eye-off' : 'mdi mdi-eye'"
@@ -30,82 +30,67 @@
           ></w-input>
           <!-- @keyup.enter="logIn(store.currentUser.authentication.username, store.currentUser.authentication.password, this.$router)" -->
         </div>
+        <w-button
+          @click="
+            logIn(
+              store.currentUser.authentication.useremail,
+              store.currentUser.authentication.password,
+              this.$router
+            )
+          "
+          :disabled="!store.isLoginEnabled()"
+        >
+          LogIn
+        </w-button>
+      </div>
+    </div>
+    <div v-else class="p-4 align-right">
+      <div class="w-flex">
+        <div class="xs8">
+          <w-input
+            class="mb1"
+            label="User ID"
+            type="text"
+            inner-icon-left="mdi mdi-account"
+            v-model="store.currentUser.user.userid"
+            readonly
+          >
+          </w-input>
+          <w-input
+            class="mb1"
+            label="User Name"
+            type="text"
+            inner-icon-left="mdi mdi-warehouse"
+            v-model="store.currentUser.user.username"
+            readonly
+          >
+          </w-input>
+          <w-input
+            class="mb1"
+            label="Email"
+            type="text"
+            inner-icon-left="mdi mdi-warehouse"
+            v-model="store.currentUser.authentication.useremail"
+            readonly
+          >
+          </w-input>
+          <w-input
+            class="mb1"
+            label="Balance"
+            type="text"
+            inner-icon-left="mdi mdi-warehouse"
+            v-model="store.currentUser.user.balance"
+            readonly
+          >
+          </w-input>
+        </div>
         <div class="xs4">
-          <w-button
-            @click="
-              logIn(
-                store.currentUser.authentication.username,
-                store.currentUser.authentication.password,
-                this.$router
-              )
-            "
-            :disabled="!store.isLoginEnabled()"
-          >
-            LogIn
-          </w-button>
-        </div>
-        <input
-          label="Email"
-          type="email"
-          v-model="store.currentUser.authentication.useremail"
-          class="border border-slate-500 rounded-md form-control pl-2"
-          placeholder="Email"
-        />
-        <input
-          label="Password"
-          type="password"
-          v-model="store.currentUser.authentication.password"
-          class="border border-slate-500 rounded-md form-control pl-2"
-          placeholder="Password"
-        />
-        <p className="error">{{ error }}</p>
-      </div>
-
-      <div class="flex justify-between">
-        <div class="flex flex-col">
-          <a
-            class="text-sm text-gray-500 hover:text-black cursor-pointer"
-            @click="toRegistrationForm('RegistrationForm')"
-            href="#RegistrationForm"
-            >Registration</a
-          >
-          <a class="text-sm text-gray-500 hover:text-black cursor-pointer" href="#"
-            >Forgot password?</a
-          >
-        </div>
-        <div>
-          <button
-            class="bg-blue-400 text-white rounded-md px-2 py-1 hover:bg-blue-500 btn btn-primary btn-block"
-            @click="
-              logIn(
-                store.currentUser.authentication.useremail,
-                store.currentUser.authentication.password,
-                this.$router
-              )
-            "
-            :disabled="!store.isLoginEnabled()"
-          >
-            Login
-          </button>
+          <router-link to="/">
+            <w-button @click="store.logOut()"> LogOut </w-button>
+          </router-link>
         </div>
       </div>
-    </form>
-  </div>
-  <div v-else>
-    <form
-      id="ProfileForm"
-      class="flex-col flex gap-2 border border-slate-500 rounded-xl shadow px-2 py-1 bg-gray-400 h-40 w-56"
-    >
-      <div class="flex items-center gap-2"></div>
-      <div>
-        <h1>{{ store.currentUser.user.userid }}</h1>
-        <h1>{{ store.currentUser.user.username }}</h1>
-        <h1>{{ store.currentUser.authentication.useremail }}</h1>
-        <h1>{{ store.currentUser.user.role }}</h1>
-        <h1>{{ store.currentUser.user.balance }}</h1>
-        <h1>{{ store.currentUser.user.price }}</h1>
-      </div>
-    </form>
+    </div>
   </div>
 </template>
 <script>
@@ -127,7 +112,8 @@ export default {
     return {
       store,
       logIn,
-      error: ''
+      error: '',
+      isPassword: true
     }
   },
   methods: {

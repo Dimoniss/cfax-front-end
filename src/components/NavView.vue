@@ -16,7 +16,7 @@ export default {
 </script>
 
 <template>
-  <nav class="sticky bg-gray-300 shadow rounded-b-md">
+  <nav class="sticky bg-gray-300 rounded-b-md">
     <ul class="flex items-center justify-around">
       <li v-for="page in navItems" :key="page" class="flex-1">
         <a

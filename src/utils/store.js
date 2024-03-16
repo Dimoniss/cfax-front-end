@@ -59,7 +59,7 @@ export const store = reactive({
             price: data.price
           },
           authentication: {
-            useremail: data.email,
+            useremail: useremail,
             password: password
           }
         }
@@ -72,5 +72,30 @@ export const store = reactive({
         window.alert('Login failed.')
       }
     )
+  },
+
+  logOut() {
+    this.currentUser = {
+      isLoggedIn: false,
+      expiry: null,
+      user: {
+        userid: null,
+        username: null,
+        role: null,
+        balance: null,
+        price: null
+      },
+      authentication: {
+        useremail: null,
+        password: null
+      },
+      provider: ''
+    }
+
+    this.token = null
+
+    this.destination = null
+
+    localStorage.removeItem('user')
   }
 })
