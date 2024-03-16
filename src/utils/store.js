@@ -1,16 +1,20 @@
 import { reactive } from 'vue'
-// import { Buffer } from 'buffer'
-// import { axiosInstance } from '@/http'
+import { Buffer } from 'buffer'
+import { axiosInstance } from '@/http'
 
 export const store = reactive({
   currentUser: {
     isLoggedIn: false,
     expiry: null,
     user: {
-      username: null
+      userid: null,
+      username: null,
+      role: null,
+      balance: null,
+      price: null
     },
     authentication: {
-      username: null,
+      useremail: null,
       password: null
     },
     provider: ''
@@ -20,52 +24,53 @@ export const store = reactive({
 
   destination: null,
 
-  loading: false
+  loading: false,
 
-  // async logIn(username, password) {
-  //   this.loading = true
+  isLoginEnabled() {
+    let isEnabled =
+      this.currentUser != null &&
+      this.currentUser.authentication != null &&
+      this.currentUser.authentication.useremail != null &&
+      this.currentUser.authentication.password != null &&
+      !(this.currentUser.authentication.password.trim().length === 0) &&
+      !(this.currentUser.authentication.useremail.trim().length === 0)
+    return isEnabled
+  },
 
-  //   const now = new Date()
+  async logIn(useremail, password) {
+    this.loading = true
 
-  //   this.token = 'Basic ' + Buffer.from(username + ':' + password, 'utf8').toString('base64')
+    const now = new Date()
 
-  //   await axiosInstance
-  //     .get(
-  //       '/login/frontend/' + this.token
-  //       // {
-  //       //     headers: {
-  //       //         'Authorization': this.token
-  //       //     }
-  //       // }
-  //     )
-  //     .then(
-  //       ({ data }) => {
-  //         if (data == null) this.token = null
+    this.token = Buffer.from(useremail + ':' + password, 'utf8').toString('base64')
 
-  //         const { name, company, provider, roles } = data
+    await axiosInstance.get('/user/front/' + this.token).then(
+      ({ data }) => {
+        if (data == null) this.token = null
 
-  //         this.currentUser = {
-  //           isLoggedIn: true,
-  //           expiry: now.getTime() + 5000000,
-  //           user: {
-  //             username: name,
-  //             company: company,
-  //             roles: roles
-  //           },
-  //           authentication: {
-  //             username: username,
-  //             password: password
-  //           },
-  //           provider: provider
-  //         }
+        this.currentUser = {
+          isLoggedIn: true,
+          expiry: now.getTime() + 5000000,
+          user: {
+            userid: data.userId,
+            username: data.userName,
+            role: data.role,
+            balance: data.balance,
+            price: data.price
+          },
+          authentication: {
+            useremail: data.email,
+            password: password
+          }
+        }
 
-  //         localStorage.setItem('user', JSON.stringify(this.currentUser))
-  //       },
-  //       (error) => {
-  //         console.log(error)
-  //         this.loading = false
-  //         window.alert('Login failed.')
-  //       }
-  //     )
-  // }
+        localStorage.setItem('user', JSON.stringify(this.currentUser))
+      },
+      (error) => {
+        console.log(error)
+        this.loading = false
+        window.alert('Login failed.')
+      }
+    )
+  }
 })
