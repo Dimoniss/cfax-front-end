@@ -8,6 +8,14 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '@/components/view/CheckVINView.vue')
   },
   {
+    path: '/registration',
+    name: 'information',
+    //component: RegistrationView
+    //lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ '@/components/view/RegistrationView.vue')
+  },
+  {
     path: '/information',
     name: 'information',
     //component: InformationView

@@ -1,11 +1,34 @@
+<template>
+  <w-app height="100%" width="100%">
+    <header><TheHeader /></header>
+    <nav><NavView @update-current-page="currentPage = $event" /></nav>
+
+    <main class="flex-1 m-auto p-12">
+      <!-- <b>store: {{ store }}</b> -->
+
+      <CheckVIN v-if="currentPage === 'Check VIN'" />
+      <Information v-else-if="currentPage === 'Information'" />
+      <Support v-else-if="currentPage === 'Support'" />
+      <RegistrationForm v-else-if="currentPage === 'RegistrationForm'" />
+      <Price v-else-if="currentPage === 'Price'" />
+      <Profile v-else-if="currentPage === 'Profile'" />
+    </main>
+    <footer>
+      <MainFooter />
+    </footer>
+  </w-app>
+</template>
+
 <script setup>
 import TheHeader from './components/HeaderView.vue'
 import CheckVIN from './components/view/CheckVINView.vue'
-import TheNav from './components/NavView.vue'
+import NavView from './components/NavView.vue'
 import Information from './components/view/InformationView.vue'
 import Support from './components/view/SupportView.vue'
 import MainFooter from './components/FooterView.vue'
-import RegistrationForm from './components/auth/RegistrationForm.vue'
+import RegistrationForm from './components/view/RegistrationView.vue'
+import Price from './components/view/PriceView.vue'
+import Profile from './components/view/ProfileView.vue'
 
 import { currentPage } from './utils/state'
 import { store } from '@/utils/store'
@@ -21,20 +44,56 @@ export default {
   }
 }
 </script>
-<template>
-  <w-app class="flex flex-col min-h-screen w-4/5 m-auto h-screen rounded-xl shadow-xl">
-    <header><TheHeader /></header>
-    <TheNav @update-current-page="currentPage = $event" />
-    <main class="flex-1 m-auto p-12">
-      <!-- <b>store: {{ store }}</b> -->
 
-      <CheckVIN v-if="currentPage === 'Check VIN'" />
-      <Information v-else-if="currentPage === 'information'" />
-      <Support v-else-if="currentPage === 'support'" />
-      <RegistrationForm v-else-if="currentPage === 'RegistrationForm'" />
-    </main>
-    <MainFooter />
-  </w-app>
-</template>
+<style scoped>
+/* Style for the horizontal menu */
+nav {
+  padding: 12px;
+  background-color: #ffffff;
+  min-height: 60px;
+}
 
-<style></style>
+.w-app {
+  background-color: #ffffff;
+  font-family: Graphik-Regular, Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+header {
+  color: #e6e6e6;
+  padding: 12px;
+  background-color: #c4c4c4;
+  min-height: 60px;
+}
+
+footer {
+  margin-top: auto;
+  padding: 12px;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  /* max-height: 60px; */
+}
+
+main {
+  color: #666;
+  background-color: #ffffff;
+}
+
+@font-face {
+  font-family: 'Graphik-Light';
+  src: url('./assets/fonts/Graphik-Light.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Graphik-Regular';
+  src: url('./assets/fonts/Graphik-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Graphik-Semibold';
+  src: url('./assets/fonts/Graphik-Semibold.woff2') format('woff2');
+}
+</style>

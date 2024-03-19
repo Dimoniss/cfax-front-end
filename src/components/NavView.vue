@@ -1,8 +1,21 @@
+<template>
+  <w-flex :gap="3" justify-center class="my1">
+    <ul class="horizontal-buttons">
+      <li v-for="page in navItems" :key="page">
+        <a @click="handleClick(page)" :href="'#' + page.toLowerCase().replace(' ', '_')">
+          <img :src="`/icon/${page.toLowerCase().replace(' ', '_')}_icon.png`" class="icon" />
+          {{ page }}
+        </a>
+      </li>
+    </ul>
+  </w-flex>
+</template>
+
 <script>
 export default {
   data() {
     return {
-      navItems: ['Check VIN', 'information', 'support'],
+      navItems: ['Check VIN', 'Price', 'Information', 'Support'],
       selectedPage: 'Check VIN'
     }
   },
@@ -15,30 +28,26 @@ export default {
 }
 </script>
 
-<template>
-  <nav class="sticky bg-gray-300 rounded-b-md">
-    <ul class="flex items-center justify-around">
-      <li v-for="page in navItems" :key="page" class="flex-1">
-        <a
-          @click="handleClick(page)"
-          :href="'#' + page.toLowerCase().replace(' ', '_')"
-          :class="{
-            'hover:text-black': selectedPage !== page,
-            'text-black': selectedPage === page,
-            'text-gray-500': selectedPage !== page,
-            'cursor-pointer': true,
-            flex: true,
-            'flex-col': true,
-            'items-center': true,
-            'p-2': true,
-            'text-sm': true,
-            capitalize: true
-          }"
-        >
-          <img :src="`/icon/${page.toLowerCase().replace(' ', '_')}_icon.png`" class="w-5" />
-          {{ page }}
-        </a>
-      </li>
-    </ul>
-  </nav>
-</template>
+<style scoped>
+/* Style for icon */
+.icon {
+  width: 17px; /* Adjust the width to make the icon smaller */
+  height: auto; /* Maintain aspect ratio */
+}
+/* Style for horizontal buttons */
+.horizontal-buttons {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+.horizontal-buttons li {
+  margin-right: 10px; /* Adjust spacing between buttons */
+}
+
+.horizontal-buttons li:last-child {
+  margin-right: 0; /* Remove margin from the last button */
+}
+</style>

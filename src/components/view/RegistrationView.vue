@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: 'RegistrationForm',
+  name: 'RegistrationView',
   data() {
     return {
       error: '',
