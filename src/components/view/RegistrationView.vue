@@ -1,16 +1,63 @@
+<template>
+  <div class="RegistrationView">
+    <h1>Registration</h1>
+    <div class="input-column">
+      <w-input
+        class="mb1"
+        label="Name"
+        type="text"
+        inner-icon-left="mdi mdi-account"
+        v-model="userName"
+      ></w-input>
+      <w-input
+        class="mb1"
+        label="Lastname"
+        type="text"
+        inner-icon-left="mdi mdi-account"
+        v-model="userLastname"
+      ></w-input>
+      <w-input
+        class="mb1"
+        label="Email"
+        type="email"
+        inner-icon-left="mdi mdi-email"
+        v-model="userEmail"
+      ></w-input>
+      <w-input
+        class="mb1"
+        label="Password"
+        :type="isPassword ? 'password' : 'text'"
+        :inner-icon-left="isPassword ? 'mdi mdi-eye-off' : 'mdi mdi-eye'"
+        @click:inner-icon-left="isPassword = !isPassword"
+        v-model="userPassword"
+      ></w-input>
+    </div>
+    <button class="w-button" @click="sendData">Registration</button>
+    <p className="error">{{ error }}</p>
+  </div>
+</template>
+
 <script>
+import { store } from '@/utils/store'
+import { axiosInstance } from '@/http'
 export default {
   name: 'RegistrationView',
   data() {
     return {
       error: '',
+      store,
       userName: '',
       userLastname: '',
       userEmail: '',
-      userPassword: ''
+      userPassword: '',
+      isPassword: true
     }
   },
   methods: {
+    toProfile() {
+      this.selectedPage = 'Profile'
+      this.$emit('update-current-page', 'Profile')
+    },
     sendData() {
       if (
         this.userName == '' ||
@@ -21,44 +68,52 @@ export default {
         this.error = 'Fill in all fields!'
       } else {
         this.error = ''
+        axiosInstance
+          .post('user/create/', {
+            username: this.userName + ' ' + this.userLastname,
+            password: this.userPassword,
+            email: this.userEmail
+          })
+          .then(({ data }) => {
+            console.log(data)
+            if (data === true) {
+              logIn(this.userEmail, this.userPassword, this.$router)
+              this.toProfile()
+            } else {
+              this.error = 'Failed to create new user!'
+            }
+          })
       }
     }
   }
 }
+
+async function logIn(useremail, password, router) {
+  await store.logIn(useremail, password)
+  console.log(router)
+  // if (store.destination != null) {
+  //   await router.push(store.destination)
+  // } else {
+  //   await router.push('/main')
+  // }
+}
 </script>
 
-<template>
-  <div
-    class="flex-col flex gap-2 border border-slate-500 rounded-xl shadow px-2 py-1 bg-gray-300 h-120 w-80"
-  >
-    <h1>Registration</h1>
-    <input
-      type="Name"
-      placeholder="Name"
-      v-model="userName"
-      class="border border-slate-500 rounded-md"
-    />
-    <input
-      type="Lastname"
-      placeholder="Lastname"
-      v-model="userLastname"
-      class="border border-slate-500 rounded-md"
-    />
-    <input
-      type="Email"
-      placeholder="Email"
-      v-model="userEmail"
-      class="border border-slate-500 rounded-md"
-    />
-    <input
-      type="Password"
-      placeholder="Password"
-      v-model="userPassword"
-      class="border border-slate-500 rounded-md"
-    />
-    <button class="bg-blue-400 text-white rounded-md px-2 py-1 hover:bg-blue-500" @click="sendData">
-      Registration
-    </button>
-    <p className="error">{{ error }}</p>
-  </div>
-</template>
+<style scoped>
+.w-button {
+  height: 36px;
+  margin-top: 15px;
+  margin-bottom: 100px;
+}
+/* Style for input column */
+.input-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Style for error message */
+.error {
+  color: red;
+}
+</style>

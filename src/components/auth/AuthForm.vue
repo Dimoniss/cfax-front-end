@@ -28,6 +28,12 @@
             @click:inner-icon-left="isPassword = !isPassword"
             v-model="store.currentUser.authentication.password"
           ></w-input>
+          <div class="links-column">
+            <a href="#" @click="toForgotPasswordForm('ForgotPass')" class="link"
+              >Forgot Password?</a
+            >
+            <a href="#" @click="toRegistrationForm('Registration')" class="link">Registration</a>
+          </div>
           <!-- @keyup.enter="logIn(store.currentUser.authentication.username, store.currentUser.authentication.password, this.$router)" -->
         </div>
         <div class="xs2 pa-2">
@@ -36,7 +42,8 @@
               logIn(
                 store.currentUser.authentication.useremail,
                 store.currentUser.authentication.password,
-                this.$router
+                this.$router,
+                toProfile
               )
             "
             :disabled="!store.isLoginEnabled()"
@@ -87,12 +94,8 @@
           </w-input>
         </div>
         <div class="xs2">
-          <router-link to="/">
-            <w-button @click="logOut()"> LogOut </w-button>
-          </router-link>
-          <router-link to="/registration">
-            <w-button @click="toProfile()"> Profile </w-button>
-          </router-link>
+          <w-button @click="logOut()"> LogOut </w-button>
+          <w-button @click="toProfile('Profile')"> Profile </w-button>
         </div>
       </div>
     </div>
@@ -102,9 +105,10 @@
 import { store } from '@/utils/store'
 import '@mdi/font/css/materialdesignicons.min.css'
 
-async function logIn(useremail, password, router) {
+async function logIn(useremail, password, router, toProfile) {
   await store.logIn(useremail, password)
   console.log(router)
+  toProfile('Profile')
   // if (store.destination != null) {
   //   await router.push(store.destination)
   // } else {
@@ -123,6 +127,10 @@ export default {
     }
   },
   methods: {
+    toForgotPasswordForm(page) {
+      this.selectedPage = page
+      this.$emit('update-current-page', page)
+    },
     toRegistrationForm(page) {
       this.selectedPage = page
       this.$emit('update-current-page', page)
@@ -136,9 +144,9 @@ export default {
         console.log('Attempting login with pass:', password)
       }
     },
-    toProfile() {
+    toProfile(page) {
       this.selectedPage = 'Profile'
-      this.$emit('update-current-page', 'Profile')
+      this.$emit('update-current-page', page)
     },
     logOut() {
       store.logOut()
@@ -147,3 +155,21 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.links-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.link {
+  margin: 2px 0; /* Adjust vertical spacing between links */
+  text-decoration: none;
+  color: #333; /* Link color */
+}
+
+.link:hover {
+  color: #555; /* Hover color */
+}
+</style>

@@ -4,14 +4,17 @@
     <nav><NavView @update-current-page="currentPage = $event" /></nav>
 
     <main class="flex-1 m-auto p-12">
-      <!-- <b>store: {{ store }}</b> -->
-
-      <CheckVIN v-if="currentPage === 'Check VIN'" />
+      <CheckVIN v-if="currentPage === 'Check VIN'" @update-current-page="currentPage = $event" />
       <Information v-else-if="currentPage === 'Information'" />
       <Support v-else-if="currentPage === 'Support'" />
-      <RegistrationForm v-else-if="currentPage === 'RegistrationForm'" />
+      <Registration
+        v-else-if="currentPage === 'Registration'"
+        @update-current-page="currentPage = $event"
+      />
       <Price v-else-if="currentPage === 'Price'" />
       <Profile v-else-if="currentPage === 'Profile'" />
+      <ForgotPass v-else-if="currentPage === 'ForgotPass'" />
+      <Purchasing v-else-if="currentPage === 'Purchasing'" />
     </main>
     <footer>
       <MainFooter />
@@ -26,9 +29,11 @@ import NavView from './components/NavView.vue'
 import Information from './components/view/InformationView.vue'
 import Support from './components/view/SupportView.vue'
 import MainFooter from './components/FooterView.vue'
-import RegistrationForm from './components/view/RegistrationView.vue'
+import Registration from './components/view/RegistrationView.vue'
 import Price from './components/view/PriceView.vue'
 import Profile from './components/view/ProfileView.vue'
+import ForgotPass from './components/view/ForgotPassForm.vue'
+import Purchasing from './components/view/PurchasingView.vue'
 
 import { currentPage } from './utils/state'
 import { store } from '@/utils/store'
@@ -63,7 +68,7 @@ nav {
 }
 
 header {
-  color: #e6e6e6;
+  color: #161616;
   padding: 12px;
   background-color: #c4c4c4;
   min-height: 60px;
@@ -72,7 +77,7 @@ header {
 footer {
   margin-top: auto;
   padding: 12px;
-  background-color: #1a1a1a;
+  background-color: #c4c4c4;
   color: #ffffff;
   /* max-height: 60px; */
 }

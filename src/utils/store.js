@@ -26,6 +26,8 @@ export const store = reactive({
 
   loading: false,
 
+  checkVin: null,
+
   isLoginEnabled() {
     let isEnabled =
       this.currentUser != null &&
@@ -97,5 +99,28 @@ export const store = reactive({
     this.destination = null
 
     localStorage.removeItem('user')
+  },
+  updateSession(user) {
+    this.currentUser = user
+
+    const now = new Date()
+
+    ;(this.currentUser.expiry = now.getTime() + 5000000),
+      localStorage.setItem('user', JSON.stringify(this.currentUser))
+  },
+  async payment(body) {
+    await axiosInstance.post('/payment/result', body).then(
+      ({ data }) => {
+        if (data != null) {
+          console.log(data)
+          this.currentUser.user.balance = data
+        }
+        localStorage.setItem('user', JSON.stringify(this.currentUser))
+      },
+      (error) => {
+        console.log(error)
+        window.alert('payment failed.')
+      }
+    )
   }
 })
