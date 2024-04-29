@@ -17,7 +17,7 @@
             <p>Carfax records: {{ vin.checked.carfax.records }}</p>
           </div>
         </div>
-        <div v-if="store.currentUser.isLoggedIn && vin.report === null">
+        <div v-if="store.currentUser.isLoggedIn && vin.checked !== null && vin.report === null">
           <w-button @click="processPayment()" :disabled="vin.checked === null">Buy Report</w-button>
           <w-button
             @click="useBalance()"
@@ -29,9 +29,13 @@
             Use balance</w-button
           >
         </div>
-        <w-button v-if="vin.report !== null" @click="openReport()">Open report</w-button>
+        <div v-if="vin.report !== null">
+          <w-button @click="openReport()">Open report</w-button>
+          <w-button @click="dawnloadPDF()">Dawnload PDF</w-button>
+        </div>
+
         <p v-if="vin.report !== null">Report has been sent to your email.</p>
-        <div v-if="store.currentUser.isLoggedIn === false">
+        <div v-if="store.currentUser.isLoggedIn === false && vin.checked !== null">
           <p>Please login or registered.</p>
           <w-button @click="toRegistration('Registration')">Registration</w-button>
         </div>
@@ -43,6 +47,8 @@
 <script>
 import { store } from '@/utils/store'
 import { vin } from '@/utils/vin'
+import html2pdf from 'html2pdf.js'
+import { saveAs } from 'file-saver'
 
 export default {
   name: 'CheckVINView',
@@ -52,7 +58,8 @@ export default {
       vin,
       inputVin: '',
       htmlContent: '',
-      isHTMLVisible: false
+      isHTMLVisible: false,
+      pdfUrl: ''
     }
   },
   created() {
@@ -75,6 +82,17 @@ export default {
       // Open a new window with the HTML content
       const newWindow = window.open('', '_blank')
       newWindow.document.write(vin.report)
+    },
+    dawnloadPDF() {
+      html2pdf()
+        .from(vin.report)
+        .toPdf()
+        .get('pdf')
+        .then((pdf) => {
+          const pdfBlob = new Blob([pdf], { type: 'application/pdf' })
+          this.pdfUrl = URL.createObjectURL(pdfBlob)
+          saveAs(this.pdfUrl, 'CarFaxReport.pdf')
+        })
     }
   },
   toPurchasing(page) {

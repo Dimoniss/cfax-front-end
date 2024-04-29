@@ -20,13 +20,11 @@ export const store = reactive({
     provider: ''
   },
 
+  defaultPrice: 3,
   token: null,
-
   destination: null,
-
   loading: false,
-
-  checkVin: null,
+  offer: null,
 
   isLoginEnabled() {
     let isEnabled =
@@ -93,11 +91,8 @@ export const store = reactive({
       },
       provider: ''
     }
-
     this.token = null
-
     this.destination = null
-
     localStorage.removeItem('user')
   },
   updateSession(user) {
@@ -120,6 +115,20 @@ export const store = reactive({
       (error) => {
         console.log(error)
         window.alert('payment failed.')
+      }
+    )
+  },
+  async getOffer() {
+    await axiosInstance.get('/offer/get-offer').then(
+      ({ data }) => {
+        if (data != null) {
+          console.log(data)
+          this.offer = data
+        }
+      },
+      (error) => {
+        console.log(error)
+        window.alert('receiving an offer failed.')
       }
     )
   }

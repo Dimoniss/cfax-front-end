@@ -85,7 +85,7 @@
           </w-input>
           <w-input
             class="mb1"
-            label="Balance"
+            label="Report balance"
             type="text"
             inner-icon-left="mdi mdi-currency-usd"
             v-model="store.currentUser.user.balance"

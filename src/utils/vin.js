@@ -25,6 +25,7 @@ export const vin = reactive({
   async getReport(vin, userId) {
     await axiosInstance.get('/report/get-report/' + vin + '/' + userId).then(({ data }) => {
       this.report = data
+      this.sendedToEmail = true
     }),
       (error) => {
         console.log(error)

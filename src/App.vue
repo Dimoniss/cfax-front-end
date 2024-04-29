@@ -37,6 +37,11 @@ import Purchasing from './components/view/PurchasingView.vue'
 
 import { currentPage } from './utils/state'
 import { store } from '@/utils/store'
+
+import { onMounted } from 'vue'
+onMounted(() => {
+  store.getOffer()
+})
 </script>
 <script>
 export default {
