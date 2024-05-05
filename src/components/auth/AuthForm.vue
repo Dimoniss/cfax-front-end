@@ -105,10 +105,9 @@
 import { store } from '@/utils/store'
 import '@mdi/font/css/materialdesignicons.min.css'
 
-async function logIn(useremail, password, router, toProfile) {
+async function logIn(useremail, password, router) {
   await store.logIn(useremail, password)
   console.log(router)
-  toProfile('Profile')
   // if (store.destination != null) {
   //   await router.push(store.destination)
   // } else {
@@ -145,6 +144,7 @@ export default {
       }
     },
     toProfile(page) {
+      store.updateProfile()
       this.selectedPage = 'Profile'
       this.$emit('update-current-page', page)
     },

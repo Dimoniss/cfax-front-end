@@ -11,7 +11,9 @@ export const store = reactive({
       username: null,
       role: null,
       balance: null,
-      price: null
+      price: null,
+      payments: null,
+      reports: null
     },
     authentication: {
       useremail: null,
@@ -56,7 +58,9 @@ export const store = reactive({
             username: data.userName,
             role: data.role,
             balance: data.balance,
-            price: data.price
+            price: data.price,
+            payments: data.payments,
+            reports: data.reports
           },
           authentication: {
             useremail: useremail,
@@ -129,6 +133,24 @@ export const store = reactive({
       (error) => {
         console.log(error)
         window.alert('receiving an offer failed.')
+      }
+    )
+  },
+  async updateProfile() {
+    await axiosInstance.get('/user/profile/' + this.currentUser.user.userid).then(
+      ({ data }) => {
+        if (data != null) {
+          console.log(data)
+          this.currentUser.user.balance = data.balance
+          this.currentUser.user.price = data.price
+          this.currentUser.user.payments = data.payments
+          this.currentUser.user.reports = data.reports
+          localStorage.setItem('user', JSON.stringify(this.currentUser))
+        }
+      },
+      (error) => {
+        console.log(error)
+        window.alert('receiving an profile failed.')
       }
     )
   }

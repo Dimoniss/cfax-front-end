@@ -1,8 +1,8 @@
 <template>
+  <h2>Check VIN</h2>
   <div grow>
     <w-flex class="justify-center">
       <div class="check-column">
-        <h1>Check VIN</h1>
         <div class="w-flex">
           <w-input class="mb1" label="Insert VIN" type="text" v-model="inputVin"></w-input>
           <w-button @click="vin.checkVin(inputVin)"> Search </w-button>
