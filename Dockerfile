@@ -34,16 +34,12 @@ RUN ls -latr ./dist
 FROM nginx:1.25.2-alpine
 
 # Copy build files from the previous stage to the Nginx HTML directory
-# COPY --from=build /prj/dist/css/ /usr/share/nginx/html/portal/css/
-# COPY --from=build /prj/dist/fonts/ /usr/share/nginx/html/portal/fonts/
-# COPY --from=build /prj/dist/js/ /usr/share/nginx/html/portal/js/
+COPY --from=build /prj/dist/favicon/ /usr/share/nginx/html/portal/favicon/
+COPY --from=build /prj/dist/config/ /usr/share/nginx/html/portal/config/
+COPY --from=build /prj/dist/assets/ /usr/share/nginx/html/portal/assets/
 COPY --from=build /prj/dist/index.html /usr/share/nginx/html/portal/
-COPY --from=build /prj/dist/*.txt /usr/share/nginx/html/portal/
-COPY --from=build /prj/dist/*.json /usr/share/nginx/html/portal/
-COPY --from=build /prj/dist/*.png /usr/share/nginx/html/portal/
-COPY --from=build /prj/dist/*.ico /usr/share/nginx/html/portal/
-# COPY --from=build /prj/dist/cfg/ /usr/share/nginx/html/portal/cfg/
-# COPY --from=build /prj/dist/img/ /usr/share/nginx/html/portal/img/
+COPY --from=build /prj/dist/icon/ /usr/share/nginx/html/portal/icon/
+COPY --from=build /prj/dist/logo/ /usr/share/nginx/html/portal/logo/
 
 # List the contents of the Nginx HTML directory
 RUN ls -latrR /usr/share/nginx/html/portal
