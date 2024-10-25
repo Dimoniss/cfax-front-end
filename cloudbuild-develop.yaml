@@ -16,7 +16,6 @@ options:
   machineType: 'E2_HIGHCPU_8'
 
 # Default variables
-# test build
 # https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values
 substitutions:
   _DOCKER_IMAGENAME: cfax-front-end
