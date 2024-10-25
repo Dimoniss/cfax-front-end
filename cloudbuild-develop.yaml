@@ -1,0 +1,26 @@
+timeout: '1800s'
+
+steps:
+  # Build the native image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '--file', 'Dockerfile', '--tag', '$_COMPLETE_IMAGE_NAME:develop', '.']
+    timeout: '1800s'
+
+  # Docker Push
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - push
+      - '$_COMPLETE_IMAGE_NAME:develop'
+
+options:
+  machineType: 'E2_HIGHCPU_8'
+
+# Default variables
+# https://cloud.google.com/build/docs/configuring-builds/substitute-variable-values
+substitutions:
+  _DOCKER_IMAGENAME: cfax-front-end
+  _DOCKER_REGISTRY: cfax-front-end
+  _SERVICE_REGION: europe-central2
+  _ARTIFACT_REPO: ${_SERVICE_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_DOCKER_REGISTRY}
+  _COMPLETE_IMAGE_NAME: ${_ARTIFACT_REPO}/${_DOCKER_IMAGENAME}
+  _PROJECT_ID: carfax-431019
