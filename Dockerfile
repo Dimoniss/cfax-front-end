@@ -34,12 +34,12 @@ RUN ls -latr ./dist
 FROM nginx:1.25.2-alpine
 
 # Copy build files from the previous stage to the Nginx HTML directory
-COPY --from=build /prj/dist/favicon/ /usr/share/nginx/html/portal/favicon/
-COPY --from=build /prj/dist/config/ /usr/share/nginx/html/portal/config/
-COPY --from=build /prj/dist/assets/ /usr/share/nginx/html/portal/assets/
-COPY --from=build /prj/dist/index.html /usr/share/nginx/html/portal/
-COPY --from=build /prj/dist/icon/ /usr/share/nginx/html/portal/icon/
-COPY --from=build /prj/dist/logo/ /usr/share/nginx/html/portal/logo/
+COPY --from=build /prj/dist/favicon/ /usr/share/nginx/html/
+COPY --from=build /prj/dist/config/ /usr/share/nginx/html/config/
+COPY --from=build /prj/dist/assets/ /usr/share/nginx/html/assets/
+COPY --from=build /prj/dist/index.html /usr/share/nginx/html/
+COPY --from=build /prj/dist/icon/ /usr/share/nginx/html/icon/
+COPY --from=build /prj/dist/logo/ /usr/share/nginx/html/logo/
 
 # List the contents of the Nginx HTML directory
-RUN ls -latrR /usr/share/nginx/html/portal
+RUN ls -latrR /usr/share/nginx/html
